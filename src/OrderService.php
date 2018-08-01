@@ -15,13 +15,18 @@ class OrderService
             return $order->type === 'Book';
         });
 
-        $bookDao = new BookDao();
+        $bookDao = $this->getBookDao();
         foreach ($ordersOfBook as $order) {
             $bookDao->insert($order);
         }
     }
 
-    private function getOrders() : array
+    protected function getBookDao()
+    {
+        return new BookDao;
+    }
+
+    protected function getOrders() : array
     {
         return array_map(function ($line) {
             return $this->mapping($line);
